@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<title>Para Evie Paulina</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    background: radial-gradient(circle at top, #1c1f2b, #0d0f1a);
+    color: #f1f1f1;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* 🌟 Estrellas */
+.stars {
+    position: fixed;
+    inset: 0;
+    background: transparent;
+    pointer-events: none;
+}
+.stars::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(2px 2px at 20% 30%, #fff, transparent),
+        radial-gradient(1.5px 1.5px at 70% 60%, #fff, transparent),
+        radial-gradient(1px 1px at 40% 80%, #fff, transparent),
+        radial-gradient(1px 1px at 90% 20%, #fff, transparent);
+    animation: twinkle 6s infinite alternate;
+}
+@keyframes twinkle {
+    from { opacity: .3; }
+    to { opacity: 1; }
+}
+
+/* Pantallas */
+.screen {
+    position: absolute;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.screen.active {
+    display: flex;
+}
+
+/* Cargando */
+.loader h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem;
+}
+
+/* Sobre */
+.envelope {
+    width: 260px;
+    height: 180px;
+    background: linear-gradient(145deg, #2c2f45, #1a1d2e);
+    border-radius: 12px;
+    position: relative;
+    cursor: pointer;
+    box-shadow: 0 20px 40px rgba(0,0,0,.5);
+}
+.envelope::before {
+    content: '';
+    position: absolute;
+    top: -90px;
+    left: 0;
+    width: 100%;
+    height: 180px;
+    background: linear-gradient(145deg, #3a3f5c, #24283f);
+    clip-path: polygon(50% 0, 100% 50%, 0 50%);
+    border-radius: 12px;
+}
+.arrow {
+    margin-top: 20px;
+    font-size: 2rem;
+    animation: bounce 1.5s infinite;
+}
+@keyframes bounce {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(10px); }
+}
+
+/* Clave */
+input {
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+    margin-top: 15px;
+}
+
+/* Contenido */
+.content {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+}
+
+/* Pastel */
+.cake {
+    font-size: 6rem;
+}
+
+/* Cartas */
+.cards {
+    display: flex;
+    gap: 20px;
+}
+.card {
+    width: 180px;
+    height: 130px;
+    background: #2a2d40;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: .3s;
+}
+.card:hover {
+    transform: scale(1.05);
+}
+.card span {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+}
+
+/* Carta abierta */
+.open-card {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+.open-card.active {
+    display: flex;
+}
+.paper {
+    width: 420px;
+    max-width: 90%;
+    background: #3a3d55;
+    color: #f5f5f5;
+    padding: 30px;
+    border-radius: 14px;
+    animation: unfold .6s ease;
+}
+@keyframes unfold {
+    from { transform: scaleY(0); }
+    to { transform: scaleY(1); }
+}
+.paper h2 {
+    font-family: 'Playfair Display', serif;
+}
+.close-btn {
+    margin-top: 20px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* Final */
+.final {
+    text-align: center;
+    padding: 30px;
+}
+</style>
+</head>
+
+<body>
+<div class="stars"></div>
+
+<!-- Cargando -->
+<div class="screen active loader" id="load">
+    <h1>Cargando algo especial para Evie Paulina…</h1>
+</div>
+
+<!-- Sobre -->
+<div class="screen" id="envelopeScreen">
+    <div class="envelope" onclick="showKey()"></div>
+    <div class="arrow">⬇</div>
+    <input id="key" placeholder="Ingresa la clave" onkeyup="checkKey()" style="display:none;">
+</div>
+
+<!-- Cartas -->
+<div class="screen" id="cardsScreen">
+    <div class="content">
+        <div class="cake">🎂</div>
+        <div class="cards">
+            <div class="card" onclick="openCard(1)"><span>Carta 1</span></div>
+            <div class="card" onclick="openCard(2)"><span>Carta 2</span></div>
+            <div class="card" onclick="openCard(3)"><span>Carta 3</span></div>
+        </div>
+    </div>
+</div>
+
+<!-- Carta abierta -->
+<div class="open-card" id="openCard">
+    <div class="paper">
+        <h2 id="cardTitle"></h2>
+        <p id="cardText"></p>
+        <button class="close-btn" onclick="closeCard()">Cerrar carta</button>
+    </div>
+</div>
+
+<!-- Mensaje final -->
+<div class="screen" id="final">
+    <div class="final">
+        <h1>Gracias por abrir cada carta 💙</h1>
+        <p>Hay cosas que no caben en una pantalla…  
+        pero sí en un momento compartido.  
+        Ojalá este detalle te recuerde que alguien pensó en ti con cariño.</p>
+    </div>
+</div>
+
+<script>
+setTimeout(()=>{
+    load.classList.remove('active');
+    envelopeScreen.classList.add('active');
+},2000);
+
+function showKey(){
+    key.style.display='block';
+}
+
+function checkKey(){
+    if(key.value === "29-1-2001"){
+        envelopeScreen.classList.remove('active');
+        cardsScreen.classList.add('active');
+    }
+}
+
+function openCard(n){
+    openCardDiv.classList.add('active');
+    if(n===1){
+        cardTitle.innerText="Carta 1";
+        cardText.innerText="Tu fecha de nacimiento no es solo una clave para abrir este mensaje. Es el día en que el mundo ganó a alguien especial, el momento exacto en que comenzó una historia que hoy sigue teniendo sentido.";
+    }
+    if(n===2){
+        cardTitle.innerText="Carta 2";
+        cardText.innerText="Feliz cumpleaños. Quería empezar como siempre, deseándote cosas bonitas, calma, sonrisas sinceras… pero mientras lees esto, piensa que por años te he escrito mensajes así. Esta vez, si te parece bien, me gustaría poder decirlo en persona.";
+    }
+    if(n===3){
+        cardTitle.innerText="Carta 3";
+        cardText.innerText="Hay palabras que se dicen mejor cuando el momento es real. Esta carta no las contiene porque merecen existir fuera de una pantalla. Solo quiero que sepas que este detalle fue hecho con intención, tiempo y mucho cariño.";
+    }
+}
+
+function closeCard(){
+    openCardDiv.classList.remove('active');
+    if(cardTitle.innerText==="Carta 3"){
+        cardsScreen.classList.remove('active');
+        final.classList.add('active');
+    }
+}
+
+const openCardDiv = document.getElementById("openCard");
+</script>
+</body>
+</html>
