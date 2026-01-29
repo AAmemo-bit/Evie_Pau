@@ -9,7 +9,7 @@
 body {
     margin: 0;
     height: 100vh;
-    background: radial-gradient(#1a1a1a, #000);
+    background: #f2efe9;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -19,22 +19,14 @@ body {
 
 /* ================= SOBRE ================= */
 .envelope {
-    width: 360px;
-    height: 230px;
-    background:
-        linear-gradient(145deg, #d8bb8c, #c4a26f),
-        repeating-linear-gradient(
-            45deg,
-            rgba(255,255,255,.03) 0px,
-            rgba(255,255,255,.03) 2px,
-            transparent 3px
-        );
-    border-radius: 4px;
-    box-shadow:
-        0 25px 45px rgba(0,0,0,.75),
-        inset 0 0 10px rgba(0,0,0,.2);
+    width: 380px;
+    height: 240px;
+    background: linear-gradient(145deg, #d7bb8e, #c2a06b);
+    border-radius: 6px;
+    box-shadow: 0 25px 45px rgba(0,0,0,.3);
     position: relative;
     cursor: pointer;
+    transition: opacity 1s ease;
 }
 
 /* solapa */
@@ -43,81 +35,48 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    height: 50%;
+    height: 55%;
     background: rgba(0,0,0,.08);
     clip-path: polygon(0 0, 100% 0, 50% 100%);
     transform-origin: top;
-    transition: transform 1s ease;
-}
-
-/* cuerpo rasgado */
-.tear-left,
-.tear-right {
-    position: absolute;
-    top: 0;
-    width: 50%;
-    height: 100%;
-    background: transparent;
-    z-index: 2;
-}
-
-.tear-left {
-    left: 0;
-    border-right: 2px dashed rgba(0,0,0,.25);
-    transition: transform 1.2s ease;
-}
-
-.tear-right {
-    right: 0;
-    border-left: 2px dashed rgba(0,0,0,.25);
     transition: transform 1.2s ease;
 }
 
 /* texto */
 .envelope-text {
     position: absolute;
-    width: 100%;
-    height: 100%;
-    z-index: 3;
+    inset: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-size: 1rem;
+    font-size: 1.05rem;
     color: #3b2a14;
     letter-spacing: .5px;
 }
 
-/* estado abierto */
-.open .flap {
-    transform: rotateX(140deg);
-}
-
-.open .tear-left {
-    transform: translateX(-30px) rotate(-2deg);
-}
-
-.open .tear-right {
-    transform: translateX(30px) rotate(2deg);
+/* abierto */
+.envelope.open .flap {
+    transform: rotateX(160deg);
 }
 
 /* ================= CARTA ================= */
 .paper {
     position: absolute;
-    width: 90vw;
-    max-width: 360px;
+    width: 92vw;
+    max-width: 380px;
     min-height: 420px;
     background:
-        linear-gradient(#fdfdfd, #f1f1f1),
+        linear-gradient(#ffffff, #f4f4f4),
         repeating-linear-gradient(
             to bottom,
             transparent 0px,
             transparent 22px,
-            rgba(0,0,0,.04) 23px
+            rgba(0,0,0,.035) 23px
         );
-    padding: 30px;
-    box-shadow: 0 30px 55px rgba(0,0,0,.75);
-    border-radius: 2px;
+    padding: 32px;
+    box-shadow: 0 30px 55px rgba(0,0,0,.35);
+    border-radius: 3px;
     display: none;
     opacity: 0;
     transform: translateY(40px);
@@ -143,16 +102,16 @@ body {
 
 .tap {
     text-align: center;
-    margin-top: 30px;
+    margin-top: 28px;
     font-size: .85rem;
-    opacity: .6;
+    opacity: .55;
 }
 
 /* ================= MOBILE ================= */
 @media (max-width: 480px) {
     .envelope {
         width: 300px;
-        height: 200px;
+        height: 210px;
     }
     .paper {
         min-height: 360px;
@@ -166,9 +125,6 @@ body {
 
 <div class="envelope" id="envelope">
     <div class="flap"></div>
-    <div class="tear-left"></div>
-    <div class="tear-right"></div>
-
     <div class="envelope-text">
         Para: Evie Paulina<br>
         De: aamm
@@ -177,7 +133,7 @@ body {
 
 <div class="paper" id="paper">
     <h2 id="title"></h2>
-    <p id="text"></p>
+    <p id="content"></p>
     <div class="tap">Toca para continuar</div>
 </div>
 
@@ -185,15 +141,15 @@ body {
 const pages = [
     {
         title: "Hola",
-        text: "Hoy quise darte algo distinto. No un mensaje rápido, sino un pequeño momento solo para ti."
+        text: "Hoy no quería escribirte algo rápido. Quería que al abrir esto sintieras que alguien se tomó su tiempo."
     },
     {
         title: "Cumpleaños",
-        text: "Cumplir años no siempre es contar el tiempo, a veces es reconocer todo lo que has vivido."
+        text: "Cumplir años no es solo sumar días. Es todo lo que has vivido, aprendido y sentido hasta aquí."
     },
     {
         title: "Para ti",
-        text: "Que este nuevo año te encuentre sonriendo más, con calma, con ilusión. Feliz cumpleaños 🎂"
+        text: "Que este nuevo año te regale calma, momentos bonitos y razones sinceras para sonreír. Feliz cumpleaños 🎂"
     }
 ];
 
@@ -201,21 +157,21 @@ let index = 0;
 const envelope = document.getElementById("envelope");
 const paper = document.getElementById("paper");
 const title = document.getElementById("title");
-const text = document.getElementById("text");
+const content = document.getElementById("content");
 
 function showPage(i) {
     title.textContent = pages[i].title;
-    text.textContent = pages[i].text;
+    content.textContent = pages[i].text;
 }
 
 envelope.addEventListener("click", () => {
     envelope.classList.add("open");
 
     setTimeout(() => {
-        envelope.style.display = "none";
+        envelope.style.opacity = "0";
         showPage(0);
         paper.classList.add("show");
-    }, 1800);
+    }, 1200);
 });
 
 paper.addEventListener("click", () => {
@@ -225,14 +181,12 @@ paper.addEventListener("click", () => {
         setTimeout(() => {
             showPage(index);
             paper.classList.add("show");
-        }, 300);
+        }, 250);
     } else {
-        document.querySelector(".tap").textContent = "💌";
+        document.querySelector(".tap").textContent = "🎉";
     }
 });
 </script>
 
 </body>
 </html>
-
-
