@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carta</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background: #f2efe9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Georgia, serif;
+    overflow: hidden;
+}
+
+/* ================= SOBRE ================= */
+.envelope {
+    width: 380px;
+    height: 240px;
+    background: linear-gradient(145deg, #d7bb8e, #c2a06b);
+    border-radius: 6px;
+    box-shadow: 0 25px 45px rgba(0,0,0,.3);
+    position: relative;
+    cursor: pointer;
+    transition: opacity 1s ease;
+}
+
+/* solapa */
+.flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 55%;
+    background: rgba(0,0,0,.08);
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    transform-origin: top;
+    transition: transform 1.2s ease;
+}
+
+/* texto */
+.envelope-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.05rem;
+    color: #3b2a14;
+    letter-spacing: .5px;
+}
+
+/* abierto */
+.envelope.open .flap {
+    transform: rotateX(160deg);
+}
+
+/* ================= CARTA ================= */
+.paper {
+    position: absolute;
+    width: 92vw;
+    max-width: 380px;
+    min-height: 420px;
+    background:
+        linear-gradient(#ffffff, #f4f4f4),
+        repeating-linear-gradient(
+            to bottom,
+            transparent 0px,
+            transparent 22px,
+            rgba(0,0,0,.035) 23px
+        );
+    padding: 32px;
+    box-shadow: 0 30px 55px rgba(0,0,0,.35);
+    border-radius: 3px;
+    display: none;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all .8s ease;
+}
+
+.paper.show {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.paper h2 {
+    margin-top: 0;
+    font-weight: normal;
+    text-align: center;
+}
+
+.paper p {
+    line-height: 1.7;
+    font-size: 1rem;
+}
+
+.tap {
+    text-align: center;
+    margin-top: 28px;
+    font-size: .85rem;
+    opacity: .55;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 480px) {
+    .envelope {
+        width: 300px;
+        height: 210px;
+    }
+    .paper {
+        min-height: 360px;
+        font-size: .95rem;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="envelope" id="envelope">
+    <div class="flap"></div>
+    <div class="envelope-text">
+        Para: Evie Paulina<br>
+        De: aamm
+    </div>
+</div>
+
+<div class="paper" id="paper">
+    <h2 id="title"></h2>
+    <p id="content"></p>
+    <div class="tap">Toca para continuar</div>
+</div>
+
+<script>
+const pages = [
+    {
+        title: "Hola",
+        text: "Hoy no quería escribirte algo rápido. Quería que al abrir esto sintieras que alguien se tomó su tiempo."
+    },
+    {
+        title: "Cumpleaños",
+        text: "Cumplir años no es solo sumar días. Es todo lo que has vivido, aprendido y sentido hasta aquí."
+    },
+    {
+        title: "Para ti",
+        text: "Que este nuevo año te regale calma, momentos bonitos y razones sinceras para sonreír. Feliz cumpleaños 🎂"
+    }
+];
+
+let index = 0;
+const envelope = document.getElementById("envelope");
+const paper = document.getElementById("paper");
+const title = document.getElementById("title");
+const content = document.getElementById("content");
+
+function showPage(i) {
+    title.textContent = pages[i].title;
+    content.textContent = pages[i].text;
+}
+
+envelope.addEventListener("click", () => {
+    envelope.classList.add("open");
+
+    setTimeout(() => {
+        envelope.style.opacity = "0";
+        showPage(0);
+        paper.classList.add("show");
+    }, 1200);
+});
+
+paper.addEventListener("click", () => {
+    index++;
+    if (index < pages.length) {
+        paper.classList.remove("show");
+        setTimeout(() => {
+            showPage(index);
+            paper.classList.add("show");
+        }, 250);
+    } else {
+        document.querySelector(".tap").textContent = "🎉";
+    }
+});
+</script>
+
+</body>
+</html>
