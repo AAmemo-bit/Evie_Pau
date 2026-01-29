@@ -3,45 +3,38 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Carta Animada</title>
+<title>Carta</title>
 
 <style>
-* {
-    box-sizing: border-box;
-}
-
 body {
-    background: radial-gradient(#111, #000);
+    margin: 0;
+    height: 100vh;
+    background: radial-gradient(#1b1b1b, #000);
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    font-family: 'Segoe UI', sans-serif;
+    font-family: Georgia, serif;
     overflow: hidden;
-    color: #333;
 }
 
 /* ================= SOBRE ================= */
 .envelope {
-    width: 260px;
-    height: 180px;
-    background: #d1a46f;
+    width: 300px;
+    height: 190px;
+    background:
+        linear-gradient(145deg, #d6b98c, #c6a574),
+        repeating-linear-gradient(
+            45deg,
+            rgba(255,255,255,.03) 0px,
+            rgba(255,255,255,.03) 2px,
+            transparent 3px
+        );
+    border-radius: 4px;
+    box-shadow:
+        0 20px 40px rgba(0,0,0,.7),
+        inset 0 0 10px rgba(0,0,0,.2);
     position: relative;
     cursor: pointer;
-    border-radius: 6px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 10px;
-}
-
-.envelope-text {
-    z-index: 2;
-    font-size: 0.9rem;
-    line-height: 1.4;
-    font-weight: bold;
 }
 
 .envelope::before {
@@ -49,94 +42,95 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    border-left: 130px solid transparent;
-    border-right: 130px solid transparent;
-    border-top: 90px solid #b88955;
-    z-index: 1;
+    border-left: 150px solid transparent;
+    border-right: 150px solid transparent;
+    border-top: 95px solid rgba(0,0,0,.08);
 }
 
-/* ================= FUEGO ================= */
-.fire {
+.envelope-text {
     position: absolute;
-    bottom: -20px;
-    left: 50%;
-    width: 80px;
-    height: 80px;
-    transform: translateX(-50%);
-    opacity: 0;
-}
-
-.flame {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    background: orange;
-    border-radius: 50%;
-    animation: flame 1s infinite ease-out;
-}
-
-@keyframes flame {
-    0% {
-        transform: translate(0, 0) scale(1);
-        opacity: 1;
-    }
-    100% {
-        transform: translate(calc(-20px + 40px * var(--x)), -80px) scale(0);
-        opacity: 0;
-    }
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.95rem;
+    color: #3a2a14;
+    letter-spacing: .5px;
 }
 
 /* ================= QUEMADO ================= */
-.burning {
-    animation: burn 1.3s forwards;
-}
-
-@keyframes burn {
-    0% { filter: brightness(1); }
-    50% { filter: brightness(2) blur(2px); }
-    100% {
-        opacity: 0;
-        transform: scale(0.7);
-    }
-}
-
-.burning .fire {
-    opacity: 1;
-}
-
-/* ================= HOJAS ================= */
-.letter {
+.burn {
     position: absolute;
-    width: 85vw;
-    max-width: 280px;
-    height: 340px;
-    background: #fff;
-    top: 120%;
+    inset: 0;
+    background: radial-gradient(circle at center,
+        rgba(255,160,0,.9) 0%,
+        rgba(180,60,0,.8) 18%,
+        rgba(0,0,0,.9) 28%,
+        rgba(0,0,0,0) 45%);
+    animation: burnPaper 2.2s forwards;
+    z-index: 3;
+}
+
+@keyframes burnPaper {
+    0%   { clip-path: circle(0% at 50% 50%); }
+    100% { clip-path: circle(80% at 50% 50%); opacity: 0; }
+}
+
+/* ================= CARTA ================= */
+.paper {
+    position: absolute;
+    width: 90vw;
+    max-width: 340px;
+    min-height: 380px;
+    background:
+        linear-gradient(#fdfdfd, #f1f1f1),
+        repeating-linear-gradient(
+            to bottom,
+            transparent 0px,
+            transparent 22px,
+            rgba(0,0,0,.04) 23px
+        );
+    padding: 28px;
+    box-shadow: 0 25px 50px rgba(0,0,0,.7);
+    border-radius: 2px;
+    display: none;
     opacity: 0;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-    transition: all 1s ease;
+    transform: translateY(40px);
+    transition: all .8s ease;
 }
 
-.letter.show {
+.paper.show {
+    display: block;
     opacity: 1;
+    transform: translateY(0);
 }
 
-.letter:nth-child(2) { transition-delay: 0.2s; }
-.letter:nth-child(3) { transition-delay: 0.4s; }
-.letter:nth-child(4) { transition-delay: 0.6s; }
-
-h2 {
+.paper h2 {
     margin-top: 0;
+    font-weight: normal;
     text-align: center;
+}
+
+.paper p {
+    line-height: 1.65;
+    font-size: 1rem;
+}
+
+.tap {
+    text-align: center;
+    margin-top: 25px;
+    font-size: .85rem;
+    opacity: .6;
 }
 
 /* ================= MOBILE ================= */
 @media (max-width: 480px) {
-    .letter {
-        height: 300px;
-        font-size: 0.95rem;
+    .paper {
+        min-height: 330px;
+        font-size: .95rem;
     }
 }
 </style>
@@ -146,75 +140,70 @@ h2 {
 
 <div class="envelope" id="envelope">
     <div class="envelope-text">
-        Para: <span id="toName"></span><br>
-        De: <span id="fromName"></span>
+        Para: Evie Paulina<br>
+        De: aamm
     </div>
-    <div class="fire" id="fire"></div>
 </div>
 
-<!-- HOJAS -->
-<div class="letter" id="letter1">
-    <h2>Hola 💌</h2>
-    <p id="text1"></p>
-</div>
-
-<div class="letter" id="letter2">
-    <h2>Un mensaje</h2>
-    <p id="text2"></p>
-</div>
-
-<div class="letter" id="letter3">
-    <h2>Para ti</h2>
-    <p id="text3"></p>
+<div class="paper" id="paper">
+    <h2 id="title"></h2>
+    <p id="text"></p>
+    <div class="tap">Toca para continuar</div>
 </div>
 
 <script>
-/* ================= TEXTO DINÁMICO ================= */
-const data = {
-    to: "Evie Paulina",
-    from: "aamm",
-    pages: [
-        "Desde el momento en que decidí escribirte, supe que no quería hacerlo de una forma común.",
-        "Esta carta es solo una pequeña muestra de lo especial que eres para mí.",
-        "Gracias por existir, por inspirar sonrisas y momentos que valen oro."
-    ]
-};
+const pages = [
+    {
+        title: "Hola",
+        text: "Hoy no quise escribirte un mensaje rápido. Quise regalarte un momento, algo que se tomara su tiempo."
+    },
+    {
+        title: "Cumpleaños",
+        text: "Un año más no siempre es solo tiempo. A veces es aprendizaje, a veces descanso, a veces volver a empezar."
+    },
+    {
+        title: "Para ti",
+        text: "Que este nuevo año te trate con suavidad, te regale sonrisas sinceras y días que se sientan ligeros. Feliz cumpleaños."
+    }
+];
 
-document.getElementById("toName").textContent = data.to;
-document.getElementById("fromName").textContent = data.from;
+let index = 0;
+const envelope = document.getElementById("envelope");
+const paper = document.getElementById("paper");
+const title = document.getElementById("title");
+const text = document.getElementById("text");
 
-document.getElementById("text1").textContent = data.pages[0];
-document.getElementById("text2").textContent = data.pages[1];
-document.getElementById("text3").textContent = data.pages[2];
-
-/* ================= FUEGO PARTÍCULAS ================= */
-const fire = document.getElementById("fire");
-
-for (let i = 0; i < 25; i++) {
-    const flame = document.createElement("div");
-    flame.classList.add("flame");
-    flame.style.setProperty("--x", Math.random());
-    flame.style.left = Math.random() * 80 + "px";
-    flame.style.animationDelay = Math.random() + "s";
-    fire.appendChild(flame);
+function showPage(i) {
+    title.textContent = pages[i].title;
+    text.textContent = pages[i].text;
 }
 
-/* ================= EVENTO ================= */
-const envelope = document.getElementById("envelope");
-const letters = document.querySelectorAll(".letter");
-
 envelope.addEventListener("click", () => {
-    envelope.classList.add("burning");
+    const burn = document.createElement("div");
+    burn.classList.add("burn");
+    envelope.appendChild(burn);
 
     setTimeout(() => {
         envelope.style.display = "none";
-        letters.forEach((letter, index) => {
-            letter.style.top = `${10 + index * 15}%`;
-            letter.classList.add("show");
-        });
-    }, 1300);
+        showPage(0);
+        paper.classList.add("show");
+    }, 2200);
+});
+
+paper.addEventListener("click", () => {
+    index++;
+    if (index < pages.length) {
+        paper.classList.remove("show");
+        setTimeout(() => {
+            showPage(index);
+            paper.classList.add("show");
+        }, 300);
+    } else {
+        document.querySelector(".tap").textContent = "🎂";
+    }
 });
 </script>
 
 </body>
 </html>
+
